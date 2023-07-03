@@ -1,0 +1,50 @@
+{%extends "Mainpage.html" %}
+
+{%block content%}
+<h2>View Details</h2>
+<form method="post" action="/addtocart">
+  {%csrf_token%}
+  <table class="table">
+    <tr>
+      <td>Book Id</td>
+      <td>{{book.id}}
+        <input type="hidden" name="bid" value="{{book.id}}" />
+      </td>
+    </tr>
+    <tr>
+      <td>Book Name</td>
+      <td>{{book.Book_name}}</td>
+    </tr>
+    <tr>
+      <td>Book Price</td>
+      <td>{{book.price}}</td>
+    </tr>
+    <tr>
+      <td>Book Description</td>
+      <td>{{book.description}}</td>
+    </tr>
+    <tr>
+      <td>Category</td> 
+      <td>{{book.cat_fk}}</td>
+    </tr>
+    <tr>    
+      <td>Image</td>
+      <td><img src="{{book.image.url}}" style="height: 200px; width:200px ;" /></td>
+    </tr>
+    <tr>
+      <td>Select Quantity</td>
+      <td><select name="qty" class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select></td>
+    </tr>
+    <tr>
+      <td><button type="submit" class="button btn-success">Add to cart</button></td>
+    </tr>
+  </table>
+</form>
+
+{%endblock%}

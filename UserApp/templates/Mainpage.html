@@ -1,0 +1,161 @@
+{%load static%}
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Online Store</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 50px;
+      border-radius: 0;
+    }
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 0;
+      background-image:url('{% static "extra/n.jpg" %}');height: 100; width: 100;
+      color: rgb(31, 6, 123);
+    
+    }
+
+    .h1{
+        text-align: right;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    .heading{
+      text-align: center;
+      padding-top: 1px;
+      padding-bottom: 2px;
+    }
+    .table{
+      text-align: center;
+    }
+
+    .form-group{
+        padding-left: 45px;
+    }
+    .advance{
+        text-align: center;
+    }
+ 
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Authentic Book Store</h1>      
+    <p>Find Your Story Here: Your One-Stop Bookstore Destination</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      {%if "uname" in request.session%}
+      <a class="navbar-brand" href="#">Welcome {{request.session.uname}}</a>
+      {%else%}
+      <a class="navbar-brand" href="#">Cake shop</a>
+      {%endif%}
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li ><a href="/">Home</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Category
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {%for cat in cats%}
+                <li><a href="/showcakes/{{cat.id}}">{{cat.cat_name}}</a></li>
+                {%endfor%}
+            </ul>
+          </li>
+        <li><a href="#">About us</a></li>
+        <form method="get" action="search" class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text"  class="form-control" placeholder="search" name="search" id="search">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+          </form>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {%if "uname" in request.session%}      
+        <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> Log Out</a></li>
+        <li><a href="/showcart"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+        {%else%}
+        <li><a href="/login"><span class="glyphicon glyphicon-user"></span> Login</a></li>
+        <li><a href="/signup"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+        {%endif%}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">    
+    {%block content%}
+    <div class="row">
+      <h3 class="heading">{{cat.cat_name}}</h3>
+      {%for Book in book%}
+       <div class="col-sm-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">{{Book.Book_name}}</div>
+          <div class="panel-body"><img src="{{Book.image.url}}" 
+            class="img-responsive" 
+            style="width:200px;height:200px" alt="Image"></div>
+          <div class="panel-footer">Price : {{Book.price}}
+            <br/>
+            <a href="/viewdetails/{{Book.id}}">View Details</a>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+    {%endblock%}
+  </div><br><br>
+
+<div class="advance">
+    <form action="/advanced_search_results/" method="GET">
+        <select name="genre">
+            <option value="">All Genres</option>
+            <option value="Mystery">Action and Adventure</option>
+            <option value="Fantasy">Biography and AutoBiograhy</option>
+            <option value="Fantasy">Classics</option>
+            <option value="Fantasy">Detective and Mystery</option>
+            <option value="Fantasy">Poetry</option>
+            <option value="Fantasy">Science Fiction</option>
+            <option value="Fantasy">Short Stories</option>
+            <!-- Add more genre options as needed -->
+        </select>
+        <label for="min_price">Min Price:</label>
+        <input type="number" name="min_price" id="min_price" placeholder="Min Price">
+        <label for="max_price">Max Price:</label>
+        <input type="number" name="max_price" id="max_price" placeholder="Max Price">
+        <button type="submit">Search</button>
+    </form></div>
+    
+<footer class="container-fluid text-center">
+  <p>Online Store Copyright</p>  
+  <form class="form-inline">Get deals:
+    <input type="email" class="form-control" size="50" placeholder="Email Address">
+    <button type="button" class="btn btn-danger">Sign Up</button>
+  </form>
+</footer>
+
+</body>
+</html>
